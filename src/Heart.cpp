@@ -103,6 +103,7 @@ void checkForAssigningVar(std::string& str)
 	std::string assignTo = "";
 	std::string assignType = "";
 	const string intT = "I";
+	const string convertBtoI = "C";
 	const string stringT = "S";
 	const string boolT = "B";
 	string sval = "";
@@ -135,6 +136,10 @@ void checkForAssigningVar(std::string& str)
 			assigning = true;
 			assignType = boolT;
 		}
+		if (codePart[i] == assign && codePart[i - 1] == 'C') {
+			assigning = true;
+			assignType = convertBtoI;
+		}
 		if (assigning && codePart[i] != endCL && codePart[i] != assign && codePart[i] != ' ' && codePart[i] != '"')
 			sval += codePart[i];
 	}
@@ -153,6 +158,30 @@ void checkForAssigningVar(std::string& str)
 		IntVariables[toChange].val = atoi(sval.c_str());
 		return;
 	}
+	if (assignType == convertBtoI) {
+		for (size_t i = 0; i < IntVariables.size(); ++i)
+		{
+			if (strcmp(IntVariables[i].name.c_str(), assignTo.c_str()) == 0) {
+				intege = IntVariables[i];
+				toChange = i;
+			}
+		}
+		for (size_t i = 0; i < BoolVariables.size(); ++i)
+		{
+			if (strcmp(BoolVariables[i].name.c_str(), sval.c_str()) == 0) {
+				boole = BoolVariables[i];
+				toChange = i;
+			}
+		}
+		int value = 0;
+		if(boole.val == boolVarA){
+			value = 1;
+		}else{
+			value = 0;
+		}
+		IntVariables[toChange].val = value;
+		return;
+	}
 	if (assignType == boolT) {
 		for (size_t i = 0; i < BoolVariables.size(); ++i)
 		{
@@ -161,8 +190,7 @@ void checkForAssigningVar(std::string& str)
 				toChange = i;
 			}
 		}
-		if(sval == boolVarA || sval == boolVarB)
-			BoolVariables[toChange].val = sval;
+		BoolVariables[toChange].val = sval;
 		return;
 	}
 	if (assignType == stringT) {
@@ -336,9 +364,7 @@ void checkForNVariable(std::string& str)
 		return;
 	}
 	if (type == typeBool) {
-		heart::BOOL var(name, boolVarB);
-		if(val != "true" || val != "false")
-			val = "false";
+		heart::BOOL var(name, val);
 		if(val == boolVarA || val == boolVarB)
 			var = heart::BOOL(name, val);
 		BoolVariables.push_back(var);
