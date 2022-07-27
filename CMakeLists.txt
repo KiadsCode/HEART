@@ -1,0 +1,10 @@
+project(Heart)
+
+add_executable(Heart src\Heart.cpp)
+add_executable(Heart src\Heart.h)
+add_executable(Heart src\INT.cpp)
+add_executable(Heart src\INT.h)
+add_executable(Heart src\STRING.cpp)
+add_executable(Heart src\STRING.h)
+add_executable(Heart src\SharedConst.h)
+add_executable(Heart src\stdafx.h)
