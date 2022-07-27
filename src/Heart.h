@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "INT.h"
 #include "STRING.h"
+#include "BOOL.h"
 #include <stdlib.h>
 #include "SharedConst.h"
 

@@ -11,6 +11,7 @@ using namespace std;
 string toFind = "";
 
 std::vector<string> NameSpaces;
+std::vector<heart::BOOL> BoolVariables;
 std::vector<heart::INT> IntVariables;
 std::vector<heart::STRING> StringVariables;
 
@@ -103,6 +104,7 @@ void checkForAssigningVar(std::string& str)
 	std::string assignType = "";
 	const string intT = "I";
 	const string stringT = "S";
+	const string boolT = "B";
 	string sval = "";
 
 	for (int i = setVar.length() + 1; i < codePart.length(); i++)
@@ -129,11 +131,16 @@ void checkForAssigningVar(std::string& str)
 			assigning = true;
 			assignType = stringT;
 		}
+		if (codePart[i] == assign && codePart[i - 1] == 'B') {
+			assigning = true;
+			assignType = boolT;
+		}
 		if (assigning && codePart[i] != endCL && codePart[i] != assign && codePart[i] != ' ' && codePart[i] != '"')
 			sval += codePart[i];
 	}
 	heart::STRING stringe("", "");
 	heart::INT intege("", 0);
+	heart::BOOL boole("","");
 	int toChange = 0;
 	if (assignType == intT) {
 		for (size_t i = 0; i < IntVariables.size(); ++i)
@@ -144,6 +151,18 @@ void checkForAssigningVar(std::string& str)
 			}
 		}
 		IntVariables[toChange].val = atoi(sval.c_str());
+		return;
+	}
+	if (assignType == boolT) {
+		for (size_t i = 0; i < BoolVariables.size(); ++i)
+		{
+			if (strcmp(BoolVariables[i].name.c_str(), assignTo.c_str()) == 0) {
+				boole = BoolVariables[i];
+				toChange = i;
+			}
+		}
+		if(sval == boolVarA || sval == boolVarB)
+			BoolVariables[toChange].val = sval;
 		return;
 	}
 	if (assignType == stringT) {
@@ -193,6 +212,7 @@ void checkForSPrint(std::string& str)
 	std::string printType = "";
 	std::string typeInt = "I";
 	std::string typeString = "S";
+	std::string typeBool = "B";
 	std::string msg = "";
 
 	for (int i = 0; i < printsFn.length(); i++)
@@ -217,6 +237,7 @@ void checkForSPrint(std::string& str)
 	int toChange = 0;
 	heart::STRING msgS("", "");
 	heart::INT msgI("", 0);
+	heart::BOOL msgB("", "");
 	for (size_t i = 0; i < StringVariables.size(); ++i)
 	{
 		if (strcmp(StringVariables[i].name.c_str(), msg.c_str()) == 0) {
@@ -228,6 +249,13 @@ void checkForSPrint(std::string& str)
 	{
 		if (strcmp(IntVariables[i].name.c_str(), msg.c_str()) == 0) {
 			msgI = IntVariables[i];
+			toChange = i;
+		}
+	}
+	for (size_t i = 0; i < BoolVariables.size(); ++i)
+	{
+		if (strcmp(BoolVariables[i].name.c_str(), msg.c_str()) == 0) {
+			msgB = BoolVariables[i];
 			toChange = i;
 		}
 	}
@@ -244,6 +272,11 @@ void checkForSPrint(std::string& str)
 			printf("\n");
 			IntVariables[toChange].isUsing = true;
 		}
+		if (printType == typeBool) {
+			printf(msgB.val.c_str());
+			printf("\n");
+			BoolVariables[toChange].isUsing = true;
+		}
 		isReady = false;
 	}
 }
@@ -257,10 +290,10 @@ void checkForNVariable(std::string& str)
 
 	for (int i = 0; i < codePart.length(); i++)
 	{
-		if (type != typeString && codePart[i] != ' ' || type != typeInt && codePart[i] != ' ') {
+		if (type != typeString && codePart[i] != ' ' || type != typeInt && codePart[i] != ' ' || type != typeBool && codePart[i] != ' ') {
 			type += codePart[i];
 		}
-		if (type == typeString || type == typeInt)
+		if (type == typeString || type == typeInt || type == typeBool)
 			i = codePart.length();
 	}
 
@@ -290,6 +323,8 @@ void checkForNVariable(std::string& str)
 		val = " ";
 	if (val == "" && type == typeInt)
 		val = "0";
+	if (val == "" && type == typeBool)
+		val = boolVarB;
 
 	val = replace(val, '_', ' ');
 	name = replace(name, ' ', '\0');
@@ -298,10 +333,21 @@ void checkForNVariable(std::string& str)
 	if (type == typeString) {
 		heart::STRING var(name, val);
 		StringVariables.push_back(var);
+		return;
+	}
+	if (type == typeBool) {
+		heart::BOOL var(name, boolVarB);
+		if(val != "true" || val != "false")
+			val = "false";
+		if(val == boolVarA || val == boolVarB)
+			var = heart::BOOL(name, val);
+		BoolVariables.push_back(var);
+		return;
 	}
 	if (type == typeInt) {
 		heart::INT integer(name, atoi(val.c_str()));
 		IntVariables.push_back(integer);
+		return;
 	}
 }
 void checkForTR(std::string& str) {
