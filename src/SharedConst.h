@@ -3,9 +3,6 @@
 #include <iostream>
 
 const std::string setVar = "set";
-const std::string ifKeyWord = "if";
-const std::string thenKeyWord = "then";
-const std::string endKeyWord = "end";
 const std::string attachFn = "attach";
 const std::string nsSys = "sys";
 const std::string printFn = "print>>";

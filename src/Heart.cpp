@@ -9,8 +9,7 @@
 using namespace std;
 using namespace heart;
 
-string toFind = "";
-
+std::vector<string> ScriptLines;
 std::vector<string> NameSpaces;
 std::vector<heart::BOOL> BoolVariables;
 std::vector<heart::INT> IntVariables;
@@ -20,9 +19,6 @@ int codeLine = 0;
 
 int main(int argc, char* argv[]) {
 	setlocale(LC_ALL, "ru");
-
-	//heart::INT placeHolder("", 0);
-	//IntVariables.push_back(placeHolder);
 
 	while (true) {
 		char inputComm[1024];
@@ -64,6 +60,7 @@ int main(int argc, char* argv[]) {
 				while (!ffrom.eof()) {
 					str = "";
 					std::getline(ffrom, str);
+					ScriptLines.push_back(str);
 					SyntaxCheck(str);
 					codeLine++;
 				}
@@ -83,35 +80,17 @@ void SyntaxCheck(std::string& str)
 {
 	if (str[0] == comment || str[0] == '\0' || str[0] == '\n')
 		return;
-
 	checkForTR(str);
 	checkForNVariable(str);
 	checkForAssigningVar(str);
 	checkForPrint(str);
 	checkForInput(str);
-	checkForIfOperation(str);
 	checkForSPrint(str);
 	checkForSInput(str);
 	checkForClean(str);
 	checkForClose(str);
 }
 #pragma region Syntax
-void checkForIfOperation(std::string& str){
-	string codePart = str;
-	string syntaxValid = "";
-
-	for (int i = 0; i < codePart.length(); i++)
-	{
-		if (codePart[i] != endCL)
-			syntaxValid += codePart[i];
-	}
-
-	if (syntaxValid != ifKeyWord)
-		return;
-	
-	
-	
-}
 void checkForAssigningVar(std::string& str)
 {
 	std::string codePart = str;
