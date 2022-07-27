@@ -7,6 +7,7 @@
 #include <cstring>
 
 using namespace std;
+using namespace heart;
 
 string toFind = "";
 
@@ -82,21 +83,35 @@ void SyntaxCheck(std::string& str)
 {
 	if (str[0] == comment || str[0] == '\0' || str[0] == '\n')
 		return;
-	if (str[str.length() - 1] != endCL) {
-		printf("На строке %d отсутствует %c\n", codeLine, endCL);
-		return;
-	}
+
 	checkForTR(str);
 	checkForNVariable(str);
 	checkForAssigningVar(str);
 	checkForPrint(str);
 	checkForInput(str);
+	checkForIfOperation(str);
 	checkForSPrint(str);
 	checkForSInput(str);
 	checkForClean(str);
 	checkForClose(str);
 }
 #pragma region Syntax
+void checkForIfOperation(std::string& str){
+	string codePart = str;
+	string syntaxValid = "";
+
+	for (int i = 0; i < codePart.length(); i++)
+	{
+		if (codePart[i] != endCL)
+			syntaxValid += codePart[i];
+	}
+
+	if (syntaxValid != ifKeyWord)
+		return;
+	
+	
+	
+}
 void checkForAssigningVar(std::string& str)
 {
 	std::string codePart = str;

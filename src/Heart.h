@@ -18,6 +18,8 @@ std::string replace(std::string& source, char oldChar, char newChar) {
 	}
 	return edited;
 }
+void checkForIfOperation(std::string& str);
+
 void checkForAssigningVar(std::string& str);
 
 void checkForSPrint(std::string& str);
