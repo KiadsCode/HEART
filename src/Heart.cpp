@@ -68,6 +68,7 @@ int main(int argc, char* argv[]) {
 				}
 			}
 			ffrom.close();
+			BoolVariables.clear();
 			NameSpaces.clear();
 			IntVariables.clear();
 			StringVariables.clear();
