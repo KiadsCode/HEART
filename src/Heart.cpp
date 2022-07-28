@@ -97,11 +97,12 @@ void checkForAssigningVar(std::string& str)
 	std::string validCode = "";
 	std::string assignTo = "";
 	std::string assignType = "";
+	const string setIntT = "=";
 	const string intT = "I";
-	const string subInt = "S";
-	const string subIntVar = "H";
-	const string addInt = "P";
-	const string addIntVar = "B";
+	const string subInt = "-";
+	const string subIntVar = "#";
+	const string addInt = "+";
+	const string addIntVar = "$";
 	const string convertBtoI = "C";
 	const string stringT = "S";
 	const string boolT = "B";
@@ -127,19 +128,19 @@ void checkForAssigningVar(std::string& str)
 			assigning = true;
 			assignType = intT;
 		}
-		if (codePart[i] == assign && codePart[i - 1] == 'P') {
+		if (codePart[i] == assign && codePart[i - 1] == '+') {
 			assigning = true;
 			assignType = addInt;
 		}
-		if (codePart[i] == assign && codePart[i - 1] == 'S') {
+		if (codePart[i] == assign && codePart[i - 1] == '-') {
 			assigning = true;
 			assignType = subInt;
 		}
-		if (codePart[i] == assign && codePart[i - 1] == 'H') {
+		if (codePart[i] == assign && codePart[i - 1] == '#') {
 			assigning = true;
 			assignType = subIntVar;
 		}
-		if (codePart[i] == assign && codePart[i - 1] == 'B') {
+		if (codePart[i] == assign && codePart[i - 1] == '$') {
 			assigning = true;
 			assignType = addIntVar;
 		}
