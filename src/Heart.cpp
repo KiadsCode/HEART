@@ -98,6 +98,10 @@ void checkForAssigningVar(std::string& str)
 	std::string assignTo = "";
 	std::string assignType = "";
 	const string intT = "I";
+	const string subInt = "S";
+	const string subIntVar = "H";
+	const string addInt = "P";
+	const string addIntVar = "B";
 	const string convertBtoI = "C";
 	const string stringT = "S";
 	const string boolT = "B";
@@ -122,6 +126,22 @@ void checkForAssigningVar(std::string& str)
 		if (codePart[i] == assign && codePart[i - 1] == 'I') {
 			assigning = true;
 			assignType = intT;
+		}
+		if (codePart[i] == assign && codePart[i - 1] == 'P') {
+			assigning = true;
+			assignType = addInt;
+		}
+		if (codePart[i] == assign && codePart[i - 1] == 'S') {
+			assigning = true;
+			assignType = subInt;
+		}
+		if (codePart[i] == assign && codePart[i - 1] == 'H') {
+			assigning = true;
+			assignType = subIntVar;
+		}
+		if (codePart[i] == assign && codePart[i - 1] == 'B') {
+			assigning = true;
+			assignType = addIntVar;
 		}
 		if (codePart[i] == assign && codePart[i - 1] == 'S') {
 			assigning = true;
@@ -151,6 +171,64 @@ void checkForAssigningVar(std::string& str)
 			}
 		}
 		IntVariables[toChange].val = atoi(sval.c_str());
+		return;
+	}
+	if (assignType == addInt) {
+		for (size_t i = 0; i < IntVariables.size(); ++i)
+		{
+			if (strcmp(IntVariables[i].name.c_str(), assignTo.c_str()) == 0) {
+				intege = IntVariables[i];
+				toChange = i;
+			}
+		}
+		IntVariables[toChange].val += atoi(sval.c_str());
+		return;
+	}
+	if (assignType == addIntVar) {
+		for (size_t i = 0; i < IntVariables.size(); ++i)
+		{
+			if (strcmp(IntVariables[i].name.c_str(), assignTo.c_str()) == 0) {
+				intege = IntVariables[i];
+				toChange = i;
+			}
+		}
+		heart::INT toAdd("", 0);
+		for (size_t i = 0; i < IntVariables.size(); ++i)
+		{
+			if (strcmp(IntVariables[i].name.c_str(), sval.c_str()) == 0) {
+				toAdd = IntVariables[i];
+			}
+		}
+		IntVariables[toChange].val += toAdd.val;
+		return;
+	}
+	if (assignType == subInt) {
+		for (size_t i = 0; i < IntVariables.size(); ++i)
+		{
+			if (strcmp(IntVariables[i].name.c_str(), assignTo.c_str()) == 0) {
+				intege = IntVariables[i];
+				toChange = i;
+			}
+		}
+		IntVariables[toChange].val -= atoi(sval.c_str());
+		return;
+	}
+	if (assignType == subIntVar) {
+		for (size_t i = 0; i < IntVariables.size(); ++i)
+		{
+			if (strcmp(IntVariables[i].name.c_str(), assignTo.c_str()) == 0) {
+				intege = IntVariables[i];
+				toChange = i;
+			}
+		}
+		heart::INT toAdd("", 0);
+		for (size_t i = 0; i < IntVariables.size(); ++i)
+		{
+			if (strcmp(IntVariables[i].name.c_str(), sval.c_str()) == 0) {
+				toAdd = IntVariables[i];
+			}
+		}
+		IntVariables[toChange].val -= toAdd.val;
 		return;
 	}
 	if (assignType == convertBtoI) {

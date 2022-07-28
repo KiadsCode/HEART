@@ -3,6 +3,8 @@
 #include <iostream>
 
 const std::string setVar = "set";
+const std::string addVar = "add";
+const std::string subVar = "sub";
 const std::string attachFn = "attach";
 const std::string nsSys = "sys";
 const std::string printFn = "print>>";
